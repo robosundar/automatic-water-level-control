@@ -1,0 +1,53 @@
+const int lowSensor = 2;
+const int midSensor = 3;
+const int highSensor = 4;
+const int relayPin = 8;
+const int buzzerPin = 9;
+
+void setup() {
+  pinMode(lowSensor, INPUT);
+  pinMode(midSensor, INPUT);
+  pinMode(highSensor, INPUT);
+  pinMode(relayPin, OUTPUT);
+  pinMode(buzzerPin, OUTPUT);
+
+  digitalWrite(relayPin, HIGH);   
+  digitalWrite(buzzerPin, LOW);
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  int lowLevel = digitalRead(lowSensor);
+  int midLevel = digitalRead(midSensor);
+  int highLevel = digitalRead(highSensor);
+
+  Serial.print("LOW: ");
+  Serial.print(lowLevel);
+  Serial.print(" MID: ");
+  Serial.print(midLevel);
+  Serial.print(" HIGH: ");
+  Serial.println(highLevel);
+
+  if (lowLevel == LOW) {
+    digitalWrite(relayPin, LOW);   
+    digitalWrite(buzzerPin, LOW);
+    Serial.println("Tank Low - Pump ON");
+  }
+
+  else if (highLevel == HIGH) {
+    digitalWrite(relayPin, HIGH);  
+    digitalWrite(buzzerPin, HIGH); 
+    Serial.println("Tank Full - Pump OFF");
+    delay(1000);
+    digitalWrite(buzzerPin, LOW);
+  }
+
+  else {
+    digitalWrite(relayPin, LOW);   
+    digitalWrite(buzzerPin, LOW);
+    Serial.println("Tank Filling...");
+  }
+
+  delay(1000);
+}
